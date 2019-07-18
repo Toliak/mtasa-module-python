@@ -1,15 +1,60 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.4)
 project(ModulePython)
+option(BUILD_TESTS Off "Build tests")
 
 set(CMAKE_CXX_STANDARD 14)
 
-set (
+add_subdirectory(lib/ModuleSdk)
+
+find_package(Python COMPONENTS Development)
+
+if (NOT Python_FOUND)
+    message(ERROR "Python not found")
+endif ()
+
+set(
+        ${PROJECT_NAME}_INCLUDE_DIR
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+set(
         ${PROJECT_NAME}_SOURCE
-        library.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/PythonVm.cpp
+)
+
+include_directories(
+        ${${PROJECT_NAME}_INCLUDE_DIR}
+        ${Python_INCLUDE_DIRS}
 )
 
 add_library(
-        mtasa_module_python
+        ${PROJECT_NAME}
         SHARED
         ${${PROJECT_NAME}_SOURCE}
 )
+
+target_include_directories(${PROJECT_NAME} SYSTEM INTERFACE
+        "$<BUILD_INTERFACE:${${PROJECT_NAME}_INCLUDE_DIR}>")
+
+target_link_libraries(
+        ${PROJECT_NAME}
+        ModuleSdk
+        ${Python_LIBRARIES}
+)
+
+if (BUILD_TESTS)
+    set(
+            ${PROJECT_NAME}_SOURCE_TEST
+            ${CMAKE_CURRENT_SOURCE_DIR}/tests/main.cpp
+    )
+
+    add_executable(${PROJECT_NAME}Tests
+            ${${PROJECT_NAME}_SOURCE_TEST}
+            )
+
+    target_link_libraries(
+            ${PROJECT_NAME}Tests
+            ${PROJECT_NAME}
+            ${CMAKE_DL_LIBS}
+    )
+endif ()
