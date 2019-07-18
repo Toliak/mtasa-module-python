@@ -1,4 +1,5 @@
 #include "ModulePython/PythonVm.h"
+#include "ModulePython/pythonModule.h"
 
 const char *PythonVm::locale = "UTF-8";
 
@@ -23,16 +24,18 @@ PythonVm *PythonVm::init(const std::wstring &programName,
         Py_SetPythonHome(pythonHome.c_str());
     }
 
-    instance->initPythonVm();
     instance->initModules();
+    instance->initPythonVm();
+
+    instance->mainModule = PyImport_AddModule("__main__");
+    instance->globalDictionary = PyModule_GetDict(instance->mainModule);
+
     return instance;
 }
 
 void PythonVm::initModules()
 {
-    this->mainModule = PyImport_AddModule("__main__");
-
-    this->globalDictionary = PyModule_GetDict(mainModule);
+    PyImport_AppendInittab("mtasa", PyInit_spam);
 }
 
 void PythonVm::initPythonVm()

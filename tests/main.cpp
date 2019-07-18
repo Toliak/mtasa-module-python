@@ -11,11 +11,21 @@ int main()
     PyDict_SetItemString(localDictionary, "multiplicand", PyLong_FromLong(2));
     PyDict_SetItemString(localDictionary, "multiplier", PyLong_FromLong(5));
     PyRun_String(pythonScript, Py_file_input, python->getGlobalDictionary(), localDictionary);
+    PyRun_File(
+        fopen("python-scripts/main.py", "r"),
+        "main.py",
+        Py_file_input,
+        python->getGlobalDictionary(),
+        localDictionary
+    );
+//    PyModu
+    PyRun_String("mtasa.test(5)", Py_file_input, python->getGlobalDictionary(), localDictionary);
+
 
     long result = PyLong_AsLong(PyDict_GetItemString(localDictionary, "result"));
     std::cout << result << std::endl;
 
-    PyObject *cXepom = PyObject_Str(PyModule_GetDict(python->getMainModule()));
+    PyObject *cXepom = PyObject_Str(localDictionary);
     PyObject *temp_bytes = PyUnicode_AsEncodedString(cXepom, "UTF-8", "strict"); // Owned reference
     if (temp_bytes != nullptr) {
         auto t = PyBytes_AS_STRING(temp_bytes);

@@ -20,6 +20,7 @@ set(
         ${PROJECT_NAME}_SOURCE
         ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/PythonVm.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/commands/pythonCheck.cpp
 )
 
 include_directories(
