@@ -1,9 +1,10 @@
+#include "ModulePython/PythonVm.h"
+#include "ModulePython/commands.h"
 #include "lua/ILuaModuleManager.h"
 #include "lua/LuaImports.h"
 #include <cstring>
-#include <numeric>
 
-#define MODULE_NAME "ModuleSdkTest"
+#define MODULE_NAME "ModulePython"
 #define MODULE_AUTHOR "Toliak"
 #define MODULE_VERSION 1.0f
 
@@ -28,6 +29,9 @@ EXTERN_C bool InitModule(ILuaModuleManager10 *pManager, char *szModuleName, char
 #endif
 
     ms_bInitWorked = true;
+
+    PythonVm::init();
+
     return true;
 }
 
@@ -41,7 +45,7 @@ EXTERN_C void RegisterFunctions(lua_State *luaVm)
         return;
     }
 
-
+    pModuleManager->RegisterFunction(luaVm, "pythonCheck", Commands::pythonCheck);
 }
 
 EXTERN_C bool DoPulse()
@@ -58,5 +62,7 @@ EXTERN_C void ResourceStopped(lua_State *luaVm)
 
 EXTERN_C bool ShutdownModule(void)
 {
+    Py_Finalize();
+
     return true;
 }

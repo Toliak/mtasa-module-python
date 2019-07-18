@@ -6,10 +6,10 @@ set(CMAKE_CXX_STANDARD 14)
 
 add_subdirectory(lib/ModuleSdk)
 
-find_package(Python COMPONENTS Development)
+find_package(PythonLibs)
 
-if (NOT Python_FOUND)
-    message(ERROR "Python not found")
+if (NOT PYTHONLIBS_FOUND)
+    message(ERROR "Python libs not found")
 endif ()
 
 set(
@@ -24,7 +24,7 @@ set(
 
 include_directories(
         ${${PROJECT_NAME}_INCLUDE_DIR}
-        ${Python_INCLUDE_DIRS}
+        ${PYTHON_INCLUDE_DIRS}
 )
 
 add_library(
@@ -39,7 +39,7 @@ target_include_directories(${PROJECT_NAME} SYSTEM INTERFACE
 target_link_libraries(
         ${PROJECT_NAME}
         ModuleSdk
-        ${Python_LIBRARIES}
+        ${PYTHON_LIBRARY}
 )
 
 if (BUILD_TESTS)

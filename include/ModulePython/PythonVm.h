@@ -8,7 +8,10 @@ class PythonVm
 public:
     static const char *locale;          ///< Encode, decode locale. Default: UTF-8
 
-    static PythonVm *getInstance();
+    static PythonVm *getInstance()
+    {
+        return PythonVm::instance;
+    }
 
     PythonVm(const PythonVm &) = delete;
     PythonVm(PythonVm &&) = delete;
@@ -21,27 +24,30 @@ public:
      * @warning Does not initialize python, if already have
      * @return Instance
      */
-    static PythonVm *init(const std::wstring &programName = L"")
+    static PythonVm *init(
+        const std::wstring &programName = L"",
+        const std::wstring &pythonPath = L"",
+        const std::wstring &pythonHome = L""
+    );
+
+    PyObject *getGlobalDictionary() const
     {
-        if (instance) {
-            return instance;
-        }
+        return globalDictionary;
+    }
 
-        instance = new PythonVm();
-        if (!programName.empty()) {
-            Py_SetProgramName(programName.c_str());
-        }
-
-        instance->initModules();
-        instance->initPythonVm();
-        return instance;
+    PyObject *getMainModule() const
+    {
+        return mainModule;
     }
 
 private:
     PythonVm() = default;
 
-    static PythonVm *instance;
+    static PythonVm *instance;                       ///< Singleton instance
 
     virtual void initModules();
     virtual void initPythonVm();
+
+    PyObject *globalDictionary = nullptr;            ///< Python's global dictionary
+    PyObject *mainModule = nullptr;                  ///< Python's main module
 };
