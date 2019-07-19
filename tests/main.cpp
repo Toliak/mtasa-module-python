@@ -35,16 +35,9 @@ int main(int argc, char *argv[])
     PyDict_SetItemString(localDictionary, "multiplier", PyLong_FromLong(5));
 
     PyRun_String(pythonScript, Py_file_input, python->getGlobalDictionary(), localDictionary);
-
-    PyRun_File(
-        fopen("../python/main.py", "r"),
-        "main.py",
-        Py_file_input,
-        python->getGlobalDictionary(),
-        localDictionary
-    );
 //    PyModu
-    PyRun_String("_mtasa_core.test(5)", Py_file_input, python->getGlobalDictionary(), localDictionary);
+
+    PyErr_Print();
 
     // Build the name object
     PyObject *pName = PyUnicode_FromString("main");

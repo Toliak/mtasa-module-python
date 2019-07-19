@@ -1,4 +1,5 @@
 from mtasa.core import test
+from mtasa import event
 
 try:
     from something import some_function
@@ -10,5 +11,6 @@ except Exception as e:
     print(e)
 
 
+@event.add_event_handler('myEvent1')
 def callback_function():
     print(test(666))

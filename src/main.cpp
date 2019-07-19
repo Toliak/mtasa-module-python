@@ -6,7 +6,7 @@
 
 #define MODULE_NAME "ModulePython"
 #define MODULE_AUTHOR "Toliak"
-#define MODULE_VERSION 1.0f
+#define MODULE_VERSION 1.01f
 
 ILuaModuleManager10 *pModuleManager = nullptr;          ///< Global module manager
 
@@ -41,15 +41,6 @@ EXTERN_C bool InitModule(ILuaModuleManager10 *pManager, char *szModuleName, char
         pyArgv
     );
 
-    PyObject *localDictionary = PyDict_New();
-    PyRun_File(
-        fopen("mods/deathmatch/python/main.py", "r"),
-        "main.py",
-        Py_file_input,
-        python->getGlobalDictionary(),
-        localDictionary
-    );
-
     return true;
 }
 
@@ -65,6 +56,7 @@ EXTERN_C void RegisterFunctions(lua_State *luaVm)
 
     pModuleManager->RegisterFunction(luaVm, "pythonCheck", Commands::pythonCheck);
     pModuleManager->RegisterFunction(luaVm, "pythonCallback", Commands::pythonCallback);
+    pModuleManager->RegisterFunction(luaVm, "pythonTriggerEvent", Commands::pythonTriggerEvent);
 }
 
 EXTERN_C bool DoPulse()
