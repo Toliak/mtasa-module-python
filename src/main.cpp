@@ -30,7 +30,25 @@ EXTERN_C bool InitModule(ILuaModuleManager10 *pManager, char *szModuleName, char
 
     ms_bInitWorked = true;
 
-    PythonVm::init();
+    PythonVm *python = PythonVm::init();
+
+    const wchar_t *myString = L"mods/deathmatch/python/main.py";
+
+    wchar_t *pyArgv[] = {const_cast<wchar_t *>(myString)};
+
+    PySys_SetArgv(
+        1,
+        pyArgv
+    );
+
+    PyObject *localDictionary = PyDict_New();
+    PyRun_File(
+        fopen("mods/deathmatch/python/main.py", "r"),
+        "main.py",
+        Py_file_input,
+        python->getGlobalDictionary(),
+        localDictionary
+    );
 
     return true;
 }
@@ -46,6 +64,7 @@ EXTERN_C void RegisterFunctions(lua_State *luaVm)
     }
 
     pModuleManager->RegisterFunction(luaVm, "pythonCheck", Commands::pythonCheck);
+    pModuleManager->RegisterFunction(luaVm, "pythonCallback", Commands::pythonCallback);
 }
 
 EXTERN_C bool DoPulse()

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "ModulePython/commands/globalLuaVm.h"
 #include <Python.h>
 
 static PyObject *
@@ -10,6 +11,11 @@ spam_system(PyObject *self, PyObject *args)
     if (!PyArg_ParseTuple(args, "n", &pointer)) {
         PyErr_SetString(PyExc_TypeError, "Parameter must be integer");
         return nullptr;
+    }
+
+    if (Commands::globalLuaVm) {
+        LuaVmExtended lua(Commands::globalLuaVm);
+        lua.call("callbackFromPython", {(int) pointer});
     }
 
     return PyLong_FromLong(pointer * 2);

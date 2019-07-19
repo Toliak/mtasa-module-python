@@ -21,6 +21,8 @@ set(
         ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/PythonVm.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/commands/pythonCheck.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/commands/pythonCallback.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/commands/globalLuaVm.cpp
 )
 
 include_directories(

@@ -1,5 +1,7 @@
 #include "ModulePython/commands/pythonCheck.h"
+#include "ModulePython/commands/globalLuaVm.h"
 #include "ModulePython/PythonVm.h"
+#include <fstream>
 
 std::string Commands::pythonCheckInternal()
 {
@@ -17,7 +19,15 @@ std::string Commands::pythonCheckInternal()
 
 int Commands::pythonCheck(lua_State *luaVm)
 {
+    updateGlobalLuaVm(luaVm);
+
     LuaVmExtended lua(luaVm);
     lua.pushArgument(pythonCheckInternal());
-    return 1;
+
+    std::ifstream file("mods/deathmatch/python/main.py");
+    std::string firstLine;
+    std::getline(file, firstLine);
+
+    lua.pushArgument(firstLine);
+    return 2;
 }
