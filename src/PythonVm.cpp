@@ -35,7 +35,10 @@ PythonVm *PythonVm::init(const std::wstring &programName,
 
 void PythonVm::initModules()
 {
-    PyImport_AppendInittab("mtasa", PyInit_spam);
+    PyImport_AppendInittab("_mtasa_core", PyInit_mtasaCore);
+//    PyImport_AppendInittab("mtasa", PyInit_mtasa);
+
+
 }
 
 void PythonVm::initPythonVm()

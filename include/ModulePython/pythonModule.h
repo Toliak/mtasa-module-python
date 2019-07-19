@@ -15,8 +15,23 @@ spam_system(PyObject *self, PyObject *args)
     return PyLong_FromLong(pointer * 2);
 }
 
-static PyMethodDef mtasaMethods[] = {
+static PyMethodDef mtasaCoreMethods[] = {
     {"test", spam_system, METH_VARARGS, "Execute a shell command."},
+    {NULL, NULL, 0, NULL}        // Sentinel
+};
+
+//static PyMod
+
+static struct PyModuleDef mtasaCoreModule = {
+    PyModuleDef_HEAD_INIT,
+    "_mtasa_core",   /* name of module */
+    nullptr, /* module documentation, may be NULL */
+    -1,       /* size of per-interpreter state of the module,
+                 or -1 if the module keeps state in global variables. */
+    mtasaCoreMethods
+};
+
+static PyMethodDef mtasaMethods[] = {
     {NULL, NULL, 0, NULL}        // Sentinel
 };
 
@@ -32,7 +47,17 @@ static struct PyModuleDef mtasaModule = {
 static PyObject *SpamError;
 
 PyMODINIT_FUNC
-PyInit_spam(void)
+PyInit_mtasaCore(void)
+{
+    PyObject *m;
+
+    m = PyModule_Create(&mtasaCoreModule);
+
+    return m;
+}
+
+PyMODINIT_FUNC
+PyInit_mtasa(void)
 {
     PyObject *m;
 
@@ -43,5 +68,19 @@ PyInit_spam(void)
     SpamError = PyErr_NewException("mtasa.error", NULL, NULL);
     Py_INCREF(SpamError);
     PyModule_AddObject(m, "error", SpamError);
+
+    PyObject *ownDict = PyModule_GetDict(m);
+    PyDict_SetItem(
+        ownDict,
+        PyUnicode_FromString("core"),
+        PyInit_mtasaCore()
+    );
+
+    PyObject *localDictionary = PyDict_New();
+    PyObject *globalDictionary = PyModule_GetDict(m);
+//
+//    PyRun_String("mtasa.__package__ = mtasa", Py_file_input, globalDictionary, localDictionary);
+//    PyRun_String("mtasa.core.__package__ = mtasa", Py_file_input, globalDictionary, localDictionary);
+
     return m;
 }

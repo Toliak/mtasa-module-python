@@ -1,18 +1,33 @@
 #include "ModulePython/PythonVm.h"
 #include <iostream>
 
-int main()
+int main(int argc, char *argv[])
 {
+    for (int i = 0; i < argc; i++) {
+        std::cout << argv[i] << std::endl;
+    }
+
     auto python = PythonVm::init();
+
+    const wchar_t *myString = L"/home/toliak/CLionProjects/MtasaModulePython/python-scripts/main.py";
+
+    wchar_t *pyArgv[] = {const_cast<wchar_t *>(myString)};
+
+    PySys_SetArgv(
+        1,
+        pyArgv
+    );
 
     PyObject *localDictionary = PyDict_New();
 
     const char *pythonScript = "result = multiplicand * multiplier\n";
     PyDict_SetItemString(localDictionary, "multiplicand", PyLong_FromLong(2));
     PyDict_SetItemString(localDictionary, "multiplier", PyLong_FromLong(5));
+
     PyRun_String(pythonScript, Py_file_input, python->getGlobalDictionary(), localDictionary);
+
     PyRun_File(
-        fopen("python-scripts/main.py", "r"),
+        fopen("../python-scripts/main.py", "r"),
         "main.py",
         Py_file_input,
         python->getGlobalDictionary(),
