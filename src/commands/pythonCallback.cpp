@@ -2,7 +2,7 @@
 #include "ModulePython/commands/globalLuaVm.h"
 #include "ModulePython/PythonVm.h"
 
-long Commands::pythonCallbackInternal()
+uintptr_t Commands::pythonCallbackInternal()
 {
     PythonVm *python = PythonVm::getInstance();
 
@@ -13,7 +13,7 @@ long Commands::pythonCallbackInternal()
 
     PyObject *result = PyObject_CallFunction(callable, "()");
 
-    return reinterpret_cast<long>(result);
+    return reinterpret_cast<uintptr_t>(result);
 }
 
 int Commands::pythonCallback(lua_State *luaVm)

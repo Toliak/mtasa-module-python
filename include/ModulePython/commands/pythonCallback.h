@@ -5,7 +5,7 @@
 namespace Commands
 {
 
-long pythonCallbackInternal();
+uintptr_t pythonCallbackInternal();
 
 int pythonCallback(lua_State *luaVm);
 

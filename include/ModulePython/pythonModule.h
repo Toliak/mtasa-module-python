@@ -52,7 +52,7 @@ static struct PyModuleDef mtasaModule = {
 
 static PyObject *SpamError;
 
-PyMODINIT_FUNC
+extern "C" PyObject*
 PyInit_mtasaCore(void)
 {
     PyObject *m;
@@ -62,7 +62,7 @@ PyInit_mtasaCore(void)
     return m;
 }
 
-PyMODINIT_FUNC
+extern "C" PyObject *
 PyInit_mtasa(void)
 {
     PyObject *m;
