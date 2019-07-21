@@ -1,3 +1,3 @@
 [submodule "lib/ModuleSdk"]
 	path = lib/ModuleSdk
-	url = git@github.com:Toliak/mtasa-module-sdk.git
+	url = https://github.com/Toliak/mtasa-module-sdk.git
