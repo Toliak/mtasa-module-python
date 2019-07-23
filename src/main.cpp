@@ -1,5 +1,6 @@
 #include "ModulePython/PythonVm.h"
 #include "ModulePython/commands.h"
+#include "ModulePython/modules/MtasaCore.h"
 #include "lua/ILuaModuleManager.h"
 #include "lua/LuaImports.h"
 #include <cstring>
@@ -30,7 +31,11 @@ EXTERN_C bool InitModule(ILuaModuleManager10 *pManager, char *szModuleName, char
 
     ms_bInitWorked = true;
 
-    PythonVm *python = PythonVm::init();
+    {           // Init modules
+        PyImport_AppendInittab("_mtasa_core", Modules::mtasaCoreInit);
+    }
+
+    PythonVm::init();
 
     const wchar_t *myString = L"mods/deathmatch/python/main.py";
 
@@ -65,7 +70,7 @@ EXTERN_C bool DoPulse()
 }
 
 
-EXTERN_C void ResourceStopped(lua_State *luaVm)
+EXTERN_C void ResourceStopped(lua_State *)
 {
 
 }
@@ -74,6 +79,10 @@ EXTERN_C void ResourceStopped(lua_State *luaVm)
 EXTERN_C bool ShutdownModule(void)
 {
     Py_Finalize();
+
+    for (PythonModule *module: Modules::initedModules) {
+        delete module;
+    }
 
     return true;
 }

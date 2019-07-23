@@ -1,7 +1,8 @@
-#include "ModulePython/commands/globalLuaVm.h"
 #include "ModulePython/PythonVm.h"
-#include <iostream>
+#include "ModulePython/commands/globalLuaVm.h"
+#include "ModulePython/modules/MtasaCore.h"
 #include <fstream>
+#include <iostream>
 
 int main(int argc, char *argv[])
 {
@@ -14,6 +15,10 @@ int main(int argc, char *argv[])
     std::getline(file, firstLine);
 
     std::cout << firstLine << std::endl;
+
+    {           // Init modules
+        PyImport_AppendInittab("_mtasa_core", Modules::mtasaCoreInit);
+    }
 
     auto python = PythonVm::init();
 
@@ -42,12 +47,14 @@ int main(int argc, char *argv[])
     // Build the name object
     PyObject *pName = PyUnicode_FromString("main");
     PyObject *pModule = PyImport_Import(pName);
+    PyErr_Print();
     PyObject *pDict = PyModule_GetDict(pModule);
     PyObject *callable = PyDict_GetItemString(pDict, "callback_function");
 
     std::cout << "Callable? " << PyCallable_Check(callable) << std::endl;
 
     PyObject *result = PyObject_CallFunction(callable, "()");
+    std::cout << "Result: " << result << std::endl;
     PyErr_Print();
 
     PyObject *cXepom = PyObject_Str(localDictionary);

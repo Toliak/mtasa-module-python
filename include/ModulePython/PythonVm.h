@@ -45,7 +45,6 @@ private:
 
     static PythonVm *instance;                       ///< Singleton instance
 
-    virtual void initModules();
     virtual void initPythonVm();
 
     PyObject *globalDictionary = nullptr;            ///< Python's global dictionary

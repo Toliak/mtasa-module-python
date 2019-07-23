@@ -24,6 +24,7 @@ set(
         ${CMAKE_CURRENT_SOURCE_DIR}/src/commands/pythonCallback.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/commands/pythonTriggerEvent.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/commands/globalLuaVm.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/modules/Modules.cpp
 )
 
 include_directories(
@@ -52,9 +53,10 @@ if (BUILD_TESTS)
             ${CMAKE_CURRENT_SOURCE_DIR}/tests/main.cpp
     )
 
-    add_executable(${PROJECT_NAME}Tests
+    add_executable(
+            ${PROJECT_NAME}Tests
             ${${PROJECT_NAME}_SOURCE_TEST}
-            )
+    )
 
     target_link_libraries(
             ${PROJECT_NAME}Tests

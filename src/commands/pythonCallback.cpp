@@ -1,10 +1,10 @@
-#include "ModulePython/commands/pythonCallback.h"
-#include "ModulePython/commands/globalLuaVm.h"
 #include "ModulePython/PythonVm.h"
+#include "ModulePython/commands/globalLuaVm.h"
+#include "ModulePython/commands/pythonCallback.h"
 
 uintptr_t Commands::pythonCallbackInternal()
 {
-    PythonVm *python = PythonVm::getInstance();
+    PythonVm::getInstance();
 
     PyObject *pName = PyUnicode_FromString("main");
     PyObject *pModule = PyImport_Import(pName);
