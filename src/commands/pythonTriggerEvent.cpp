@@ -10,22 +10,16 @@ void Commands::pythonTriggerEventInternal(const std::string &eventName)
         {"entered the internal"}
     );
 
-    PyObject *pName = PyUnicode_FromString("mtasa");
+    PyObject *pName = PyUnicode_FromString("mtasa.event");
     PyObject *pModule = PyImport_Import(pName);
 
-    debugInternal(globalLuaVm, {std::to_string((ptrdiff_t) pModule)});
+    debugInternal(globalLuaVm, {"pModule", std::to_string((ptrdiff_t) pModule)});
 
     PyObject *pDict = PyModule_GetDict(pModule);
 
-    pModule = PyDict_GetItemString(pDict, "event");
-
-    debugInternal(globalLuaVm, {std::to_string((ptrdiff_t) pModule)});
-
-    pDict = PyModule_GetDict(pModule);
-
     PyObject *callable = PyDict_GetItemString(pDict, "trigger_event");
 
-    debugInternal(globalLuaVm, {std::to_string((ptrdiff_t) pName)});
+    debugInternal(globalLuaVm, {"callable", std::to_string((ptrdiff_t) callable)});
 
     PyObject *result = PyObject_CallFunction(callable, "(s)", PyUnicode_FromString(eventName.c_str()));
 

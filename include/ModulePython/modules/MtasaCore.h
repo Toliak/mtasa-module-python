@@ -1,5 +1,6 @@
 #pragma once
 
+#include "ModulePython/commands/debug.h"
 #include "ModulePython/PythonModule.h"
 #include "ModulePython/commands/globalLuaVm.h"
 #include "Modules.h"
@@ -12,12 +13,16 @@ class MtasaCore: public PythonModule
 public:
     static PyObject *callback(PyObject *self, PyObject *args)
     {
+        Commands::debugInternal(Commands::globalLuaVm, {"we are in core"});
+
         Py_ssize_t pointer;
 
         if (!PyArg_ParseTuple(args, "n", &pointer)) {
             PyErr_SetString(PyExc_TypeError, "Parameter must be integer");
             return nullptr;
         }
+
+        Commands::debugInternal(Commands::globalLuaVm, {"we are in core x2"});
 
         if (Commands::globalLuaVm) {
             LuaVmExtended lua(Commands::globalLuaVm);

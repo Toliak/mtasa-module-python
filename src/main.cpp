@@ -37,10 +37,9 @@ EXTERN_C bool InitModule(ILuaModuleManager10 *pManager, char *szModuleName, char
 
     PythonVm::init();
 
-    const wchar_t *myString = L"mods/deathmatch/python/main.py";
-
-    wchar_t *pyArgv[] = {const_cast<wchar_t *>(myString)};
-
+    // TODO: move to init
+    const wchar_t *pythonPath = L"mods/deathmatch/python/__init__.py";
+    wchar_t *pyArgv[] = {const_cast<wchar_t *>(pythonPath)};
     PySys_SetArgv(
         1,
         pyArgv
@@ -59,6 +58,7 @@ EXTERN_C void RegisterFunctions(lua_State *luaVm)
         return;
     }
 
+    pModuleManager->RegisterFunction(luaVm, "pythonInit", Commands::pythonInit);
     pModuleManager->RegisterFunction(luaVm, "pythonCheck", Commands::pythonCheck);
     pModuleManager->RegisterFunction(luaVm, "pythonCallback", Commands::pythonCallback);
     pModuleManager->RegisterFunction(luaVm, "pythonTriggerEvent", Commands::pythonTriggerEvent);

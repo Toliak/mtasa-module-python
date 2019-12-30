@@ -6,11 +6,7 @@ set(CMAKE_CXX_STANDARD 14)
 
 add_subdirectory(lib/ModuleSdk)
 
-find_package(PythonLibs)
-
-if (NOT PYTHONLIBS_FOUND)
-    message(ERROR "Python libs not found")
-endif ()
+find_package(PythonLibs 3.6 REQUIRED)
 
 set(
         ${PROJECT_NAME}_INCLUDE_DIR
@@ -20,6 +16,8 @@ set(
         ${PROJECT_NAME}_SOURCE
         ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/PythonVm.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/commands/debug.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/commands/pythonInit.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/commands/pythonCheck.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/commands/pythonCallback.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/commands/pythonTriggerEvent.cpp

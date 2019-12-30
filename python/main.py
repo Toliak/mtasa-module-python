@@ -1,16 +1,20 @@
 from mtasa.core import test
 from mtasa import event
 
-try:
-    from something import some_function
+from flask import Flask
 
-    print(test(99990))
-    print(some_function(1, 2))
+app = Flask(__name__)
 
-except Exception as e:
-    print(e)
+
+@app.route('/')
+def hello_world():
+    return 'Hello World from FLASK!'
 
 
 @event.add_event_handler('myEvent1')
 def callback_function():
-    print(test(666))
+    try:
+        app.run(host='0.0.0.0')
+        test(0)
+    except Exception:
+        test(-1)
