@@ -1,11 +1,10 @@
-from mtasa import event
 from mtasa.core import test
-
-
-def some_function(a, b):
-    return a - b
+from mtasa import event
 
 
 @event.add_event_handler('myEvent1')
 def callback_function():
-    test(5558)
+    try:
+        test('0')
+    except Exception:
+        test('-1')
