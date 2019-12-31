@@ -15,13 +15,16 @@ set(
 set(
         ${PROJECT_NAME}_SOURCE
         ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/PythonModule.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/PythonVm.cpp
+
         ${CMAKE_CURRENT_SOURCE_DIR}/src/commands/debug.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/commands/pythonInit.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/commands/pythonCheck.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/commands/pythonCallback.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/commands/pythonCheck.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/commands/pythonInit.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/commands/pythonTriggerEvent.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/commands/globalLuaVm.cpp
+
         ${CMAKE_CURRENT_SOURCE_DIR}/src/modules/Modules.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/modules/MtasaCore.cpp
 )

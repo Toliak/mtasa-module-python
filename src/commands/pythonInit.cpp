@@ -6,7 +6,7 @@
 
 using ModuleNameList = std::list<std::string>;
 
-int pythonInitInternal(const ModuleNameList &moduleNames)
+int pythonInitUserModules(const ModuleNameList &moduleNames)
 {
     // load provided modules
     for (const auto &name: moduleNames) {
@@ -49,7 +49,9 @@ int Commands::pythonInit(lua_State *luaVm)
         debugInternal(luaVm, {e.what()});
     }
 
-    int result = pythonInitInternal(fileList);
+    int result = pythonInitUserModules(fileList);
+
+
     lua.pushArgument(result);
 
     return 1;
