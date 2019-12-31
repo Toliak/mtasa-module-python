@@ -7,7 +7,7 @@
 
 #define MODULE_NAME "ModulePython"
 #define MODULE_AUTHOR "Toliak"
-#define MODULE_VERSION 1.01f
+#define MODULE_VERSION 1.02f
 
 ILuaModuleManager10 *pModuleManager = nullptr;          ///< Global module manager
 

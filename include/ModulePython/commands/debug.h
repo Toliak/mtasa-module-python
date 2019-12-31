@@ -7,6 +7,7 @@
 namespace Commands
 {
 
+// TODO: move into nested namespace
 
 void debugInternal(lua_State *luaVm, const std::list<LuaArgument> &args);
 

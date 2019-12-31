@@ -7,6 +7,6 @@
 namespace Modules
 {
 
-extern std::set<PythonModule *> initedModules;
+extern std::set<PythonModule *> initedModules;      ///< Global set of initialized modules
 
 }

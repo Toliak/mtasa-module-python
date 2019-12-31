@@ -8,6 +8,10 @@ class PythonVm
 public:
     static const char *locale;          ///< Encode, decode locale. Default: UTF-8
 
+    /**
+     * @brief Instance getter
+     * @return Instance pointer if exists, nullptr otherwise
+     */
     static PythonVm *getInstance()
     {
         return PythonVm::instance;
@@ -21,7 +25,6 @@ public:
 
     /**
      * @brief Python initializer
-     * @warning Does not initialize python, if already have
      * @return Instance
      */
     static PythonVm *init(
@@ -30,11 +33,19 @@ public:
         const std::wstring &pythonHome = L""
     );
 
+    /**
+     * @brief Global dictionary getter
+     * @return PyObject pointer to dictionary
+     */
     PyObject *getGlobalDictionary() const
     {
         return globalDictionary;
     }
 
+    /**
+     * @brief Main module getter
+     * @return PyObject pointer to module
+     */
     PyObject *getMainModule() const
     {
         return mainModule;

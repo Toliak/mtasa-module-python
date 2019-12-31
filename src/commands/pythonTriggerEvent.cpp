@@ -7,7 +7,7 @@ void Commands::pythonTriggerEventInternal(const std::string &eventName)
 {
     debugInternal(
         globalLuaVm,
-        {"entered the internal"}
+        {"entered the internal", eventName}
     );
 
     PyObject *pName = PyUnicode_FromString("mtasa.event");
@@ -21,14 +21,18 @@ void Commands::pythonTriggerEventInternal(const std::string &eventName)
 
     debugInternal(globalLuaVm, {"callable", std::to_string((ptrdiff_t) callable)});
 
-    PyObject *result = PyObject_CallFunction(callable, "(s)", PyUnicode_FromString(eventName.c_str()));
+    try {
+        PyObject *result = PyObject_CallFunction(callable, "s", eventName.c_str());
 
-    debugInternal(
-        globalLuaVm,
-        {
-            std::to_string((ptrdiff_t) result),
-        }
-    );
+        debugInternal(
+            globalLuaVm,
+            {
+                std::to_string((ptrdiff_t) result),
+            }
+        );
+    } catch (std::exception &e) {
+        debugInternal(globalLuaVm, {"exception!", std::string{e.what()}});
+    }
 }
 
 int Commands::pythonTriggerEvent(lua_State *luaVm)
@@ -38,7 +42,7 @@ int Commands::pythonTriggerEvent(lua_State *luaVm)
 
     std::string eventName;
     try {
-        eventName = lua.parseArgument(1, LuaTypeString).toString();
+        eventName = lua.parseArgument(1, LuaArgumentType::LuaTypeString).toString();
     } catch (LuaException &e) {
         lua.pushArgument({e.what()});
         return 1;

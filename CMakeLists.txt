@@ -23,6 +23,7 @@ set(
         ${CMAKE_CURRENT_SOURCE_DIR}/src/commands/pythonTriggerEvent.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/commands/globalLuaVm.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/modules/Modules.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/modules/MtasaCore.cpp
 )
 
 include_directories(

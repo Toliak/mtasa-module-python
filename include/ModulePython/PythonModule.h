@@ -17,7 +17,8 @@ public:
     PythonModule &operator=(PythonModule &&) = default;
 
     /**
-     * Module documentation getter
+     * @brief Module documentation getter
+     * @return String doc
      */
     const std::string &getModuleDoc() const
     {
@@ -25,7 +26,8 @@ public:
     }
 
     /**
-     * Module name getter
+     * @brief Module name getter
+     * @return String name
      */
     const std::string &getModuleName() const
     {
@@ -33,7 +35,8 @@ public:
     }
 
     /**
-     * Methods getter
+     * @brief Methods getter
+     * @return Vector of PyMethodDef
      */
     const std::vector<PyMethodDef> &getMethods() const
     {
@@ -41,7 +44,7 @@ public:
     }
 
     /**
-     * Push new method
+     * @brief Push new method
      * @param method Python method
      */
     void addMethod(const PyMethodDef &method)
@@ -50,75 +53,35 @@ public:
     }
 
     /**
-     * Creates c-style methods array from methods vector.
-     * Saves it in PythonModule object.
-     * Destructs old array.
-     * Will be destructed by destructor
-     * @return array
+     * @brief Creates c-style methods array from methods vector.
+     * @return C-style array
      */
-    PyMethodDef *getMethodsArray()
-    {
-        delete[] this->methodsArray;
-
-        const size_t arraySize = this->methods.size();
-        this->methodsArray = new PyMethodDef[arraySize + 1];        // +1 for sentinel
-
-        for (size_t i = 0; i < arraySize; i++) {
-            this->methodsArray[i] = this->methods[i];
-        }
-
-        PyMethodDef sentinel{
-            nullptr,
-            nullptr,
-            0,
-            nullptr
-        };
-        this->methodsArray[arraySize] = sentinel;
-
-        return this->methodsArray;
-    }
+    PyMethodDef *getMethodsArray() const;
 
     /**
-     * Created pointer to PyModuleDef object.
-     * Saves it in PythonModule object.
-     * Destructs old array.
-     * Will be destructed by destructor
-     * @return pointer
+     * @brief Created pointer to PyModuleDef object.
+     * @return PyModuleDef pointer
      */
-    virtual PyModuleDef *getModule()
-    {
-        delete this->module;
-
-        this->module = new PyModuleDef{
-            PyModuleDef_HEAD_INIT,
-            this->moduleName.c_str(),   /* name of module */
-            this->moduleDoc.c_str(), /* module documentation, may be NULL */
-            -1,       /* size of per-interpreter state of the module,
-                 or -1 if the module keeps state in global variables. */
-            this->getMethodsArray()
-        };
-
-        return this->module;
-    }
+    virtual PyModuleDef *getModule() const;
 
     /**
-     * Module constructor
+     * @brief Module constructor
      */
     virtual void init()
     {
         this->moduleCreated = PyModule_Create(this->getModule());
     }
 
+    /**
+     * @brief Created module getter
+     * @return PyObject pointer
+     */
     PyObject *getModuleCreated() const
     {
         return this->moduleCreated;
     }
 
-    virtual ~PythonModule()
-    {
-        delete[] this->methodsArray;
-        delete this->module;
-    }
+    virtual ~PythonModule() = default;
 
 protected:
     // Main properties
@@ -126,9 +89,6 @@ protected:
     std::string moduleDoc;
     std::vector<PyMethodDef> methods;
 
-    // Destructable
-    PyMethodDef *methodsArray = nullptr;
-    PyModuleDef *module = nullptr;
 
     PyObject *moduleCreated = nullptr;
 };
