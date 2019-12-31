@@ -1,6 +1,7 @@
 image: docker:18.09.7
 
 variables:
+  GIT_SUBMODULE_STRATEGY: recursive
   DOCKER_TLS_CERTDIR: "/certs"
 
 services:
