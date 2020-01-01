@@ -4,5 +4,13 @@ addEventHandler('onResourceStart', resourceRoot, function()
         return false
     end
 
-    pythonInit(FILES)
+    allModules = {}
+    for _, v in ipairs(CORE_MODULES) do
+        table.insert(allModules, v)
+    end
+    for _, v in ipairs(USER_MODULES) do
+        table.insert(allModules, v)
+    end
+
+    pythonInit(allModules)
 end)

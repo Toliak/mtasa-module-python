@@ -4,12 +4,12 @@
 #include "ModuleSdk/LuaVmExtended.h"
 #include "ModuleSdk/LuaArgument.h"
 
-namespace Commands
+namespace Utilities
 {
 
-// TODO: move into nested namespace
+void iprint(lua_State *luaVm, const std::list<LuaArgument> &args);
 
-void debugInternal(lua_State *luaVm, const std::list<LuaArgument> &args);
+void error(lua_State *luaVm, const std::string &errorMessage);
 
 std::string pythonObjectToString(PyObject *object);
 

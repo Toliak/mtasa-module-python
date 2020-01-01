@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ModulePython/commands/debug.h"
+#include "ModulePython/utilities.h"
 #include "ModulePython/PythonModule.h"
 #include "ModulePython/commands/globalLuaVm.h"
 #include "Modules.h"

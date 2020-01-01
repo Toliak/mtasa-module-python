@@ -1,11 +1,11 @@
-#include "ModulePython/commands/debug.h"
+#include "ModulePython/utilities.h"
 #include "ModulePython/commands/globalLuaVm.h"
 #include "ModulePython/commands/pythonTriggerEvent.h"
 #include "ModulePython/PythonVm.h"
 
 void Commands::pythonTriggerEventInternal(const std::string &eventName)
 {
-    debugInternal(
+    Utilities::iprint(
         globalLuaVm,
         {"entered the internal", eventName}
     );
@@ -13,25 +13,25 @@ void Commands::pythonTriggerEventInternal(const std::string &eventName)
     PyObject *pName = PyUnicode_FromString("mtasa.event");
     PyObject *pModule = PyImport_Import(pName);
 
-    debugInternal(globalLuaVm, {"pModule", std::to_string((ptrdiff_t) pModule)});
+    Utilities::iprint(globalLuaVm, {"pModule", std::to_string((ptrdiff_t) pModule)});
 
     PyObject *pDict = PyModule_GetDict(pModule);
 
     PyObject *callable = PyDict_GetItemString(pDict, "trigger_event");
 
-    debugInternal(globalLuaVm, {"callable", std::to_string((ptrdiff_t) callable)});
+    Utilities::iprint(globalLuaVm, {"callable", std::to_string((ptrdiff_t) callable)});
 
     try {
         PyObject *result = PyObject_CallFunction(callable, "s", eventName.c_str());
 
-        debugInternal(
+        Utilities::iprint(
             globalLuaVm,
             {
                 std::to_string((ptrdiff_t) result),
             }
         );
     } catch (std::exception &e) {
-        debugInternal(globalLuaVm, {"exception!", std::string{e.what()}});
+        Utilities::iprint(globalLuaVm, {"exception!", std::string{e.what()}});
     }
 }
 
@@ -47,7 +47,7 @@ int Commands::pythonTriggerEvent(lua_State *luaVm)
         lua.pushArgument({e.what()});
         return 1;
     }
-    debugInternal(luaVm, {eventName});
+    Utilities::iprint(luaVm, {eventName});
 
     pythonTriggerEventInternal(eventName);
     return 0;

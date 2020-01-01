@@ -7,7 +7,7 @@
 
 #define MODULE_NAME "ModulePython"
 #define MODULE_AUTHOR "Toliak"
-#define MODULE_VERSION 1.02f
+#define MODULE_VERSION 1.03f
 
 ILuaModuleManager10 *pModuleManager = nullptr;          ///< Global module manager
 
@@ -60,7 +60,7 @@ EXTERN_C void RegisterFunctions(lua_State *luaVm)
 
     pModuleManager->RegisterFunction(luaVm, "pythonInit", Commands::pythonInit);
     pModuleManager->RegisterFunction(luaVm, "isPythonInited", Commands::isPythonInited);
-    pModuleManager->RegisterFunction(luaVm, "pythonCallback", Commands::pythonCallback);
+    pModuleManager->RegisterFunction(luaVm, "pythonCall", Commands::pythonCall);
     pModuleManager->RegisterFunction(luaVm, "pythonTriggerEvent", Commands::pythonTriggerEvent);
 }
 
@@ -80,6 +80,7 @@ EXTERN_C bool ShutdownModule(void)
 {
     Py_Finalize();
 
+    // TODO: revise
     for (PythonModule *module: Modules::initedModules) {
         delete module;
     }

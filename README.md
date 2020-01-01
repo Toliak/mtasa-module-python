@@ -11,7 +11,34 @@ Full Python 3.7.6 support for server-side scripts
 
 TODO
 
-### References
+## API
+
+### pythonInit
+
+``int[, string] pythonInit(table moduleNames)``
+
+Initializes Python VM and loads modules
+
+#### Arguments
+
+``table moduleNames`` - list of module names (strings)
+
+#### Return
+
+Amount of loaded modules, if success. 
+Exit code and error message, otherwise.
+
+### isPythonInited
+
+``bool isPythonInited()``
+
+Checks is Python VM already created
+
+#### Return
+
+True, if Python VM is created. False otherwise.
+
+## References
 
 Origin: [https://gitlab.toliak.ru/mtasa/module-python](https://gitlab.toliak.ru/mtasa/module-python)
 

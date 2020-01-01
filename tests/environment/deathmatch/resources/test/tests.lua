@@ -5,6 +5,18 @@ local TEST_FUNCTIONS = {
         input = { },
         expected = { true },
     },
+    {
+        name = "pythonCall",
+        description = "Calls function from python",
+        input = { "something" },
+        expected = { -1, "Expected String" }
+    },
+    {
+        name = "pythonCall",
+        description = "Calls function from python",
+        input = { "something", "call_function" },
+        expected = { -1 }
+    }
 }
 
 addEventHandler("onResourceStart", resourceRoot, function()
