@@ -1,0 +1,9 @@
+<meta>
+    <info author="Toliak" type="script"/>
+
+    <script src="config.lua" type="server" cache="false" />
+    <script src="init.lua" type="server" cache="false" />
+    <script src="python.lua" type="server" cache="false" />
+
+    <oop>true</oop>
+</meta>
