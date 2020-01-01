@@ -20,7 +20,7 @@ set(
 
         ${CMAKE_CURRENT_SOURCE_DIR}/src/commands/debug.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/commands/pythonCallback.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/commands/pythonCheck.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/commands/isPythonInited.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/commands/pythonInit.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/commands/pythonTriggerEvent.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/commands/globalLuaVm.cpp

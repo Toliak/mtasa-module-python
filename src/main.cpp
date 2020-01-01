@@ -59,7 +59,7 @@ EXTERN_C void RegisterFunctions(lua_State *luaVm)
     }
 
     pModuleManager->RegisterFunction(luaVm, "pythonInit", Commands::pythonInit);
-    pModuleManager->RegisterFunction(luaVm, "pythonCheck", Commands::pythonCheck);
+    pModuleManager->RegisterFunction(luaVm, "isPythonInited", Commands::isPythonInited);
     pModuleManager->RegisterFunction(luaVm, "pythonCallback", Commands::pythonCallback);
     pModuleManager->RegisterFunction(luaVm, "pythonTriggerEvent", Commands::pythonTriggerEvent);
 }

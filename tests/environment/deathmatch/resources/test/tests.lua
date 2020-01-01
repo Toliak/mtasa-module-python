@@ -1,13 +1,9 @@
-function echoTest()
-    return "hello"
-end
-
 local TEST_FUNCTIONS = {
     {
-        name = "echoTest",
-        description = "echoTest TODO: change",
+        name = "isPythonInited",
+        description = "Checks Python VM initialization",
         input = { },
-        expected = { "hello" },
+        expected = { true },
     },
 }
 
