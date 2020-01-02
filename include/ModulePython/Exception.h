@@ -69,3 +69,17 @@ public:
         : PythonException("Unexpected type '" + typeName +  "'")
     {}
 };
+
+class PythonInternalError: public PythonException
+{
+public:
+    using PythonException::PythonException;
+
+    explicit PythonInternalError()
+        : PythonException("Python internal error")
+    {}
+
+    explicit PythonInternalError(const std::string &errorMessage)
+        : PythonException(errorMessage)
+    {}
+};

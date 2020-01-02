@@ -39,9 +39,7 @@ ArgumentList parseFromPython(PyObject *object)
     result.push_back(std::move(Utilities::pyObjectToLuaArgument(object)));
     return result;
 }
-// TODO: provide passing userdata
 
-// throws LuaUnexpectedType
 ArgumentList pythonCallInternal(const std::string &moduleName,
                        const std::string &functionName,
                        const ArgumentList &arguments)
@@ -67,6 +65,10 @@ ArgumentList pythonCallInternal(const std::string &moduleName,
     // call function
 
     PyObject *functionResult = PyObject_CallObject(callable, pythonArguments);
+    if (!functionResult) {
+        Utilities::pythonCaptureException();
+    }
+
     return parseFromPython(functionResult);
 }
 
@@ -102,6 +104,7 @@ int Commands::pythonCall(lua_State *luaVm)
 
         std::list<LuaArgument> returnArgs{-2, exception.what()};
         return lua.pushArguments(returnArgs.cbegin(), returnArgs.cend());
+
     } catch (PythonException &exception) {
         Utilities::error(luaVm, exception.what());
 

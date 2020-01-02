@@ -1,6 +1,6 @@
 import json
 
-from mtasa import core
+from mtasa import coreb
 from mtasa.element import Element
 
 
@@ -25,6 +25,4 @@ def echo(*args):
 
 
 def callback(*args):
-    # raise TypeError("Sample exception")
-
     return core.call('callbackFromPython', 1, *args)

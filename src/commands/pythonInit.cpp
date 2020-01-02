@@ -17,19 +17,14 @@ int pythonInitUserModules(const ModuleNameList &moduleNames)
         PyObject *module = PyImport_Import(pythonName);
 
         if (!module) {
+            if (PyErr_Occurred()) {
+                Utilities::pythonCaptureException();
+            }
+
             throw PythonModuleNotFound{name};
         }
 
         Modules::userModules.emplace(name, module);
-
-        Utilities::iprint(
-            Commands::globalLuaVm,
-            {
-                "Import ",
-                name,
-                std::to_string((uintptr_t) module)
-            }
-        );
     }
 }
 

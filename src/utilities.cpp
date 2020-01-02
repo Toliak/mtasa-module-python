@@ -156,7 +156,7 @@ void error(lua_State *luaVm, const std::string &errorMessage)
     lua.call("outputDebugString", {errorMessage, 1});
 }
 
-std::string pythonObjectToString(PyObject *object)
+std::string pyObjectToString(PyObject *object)
 {
     PyObject *repr = PyObject_Repr(object);
     PyObject *str = PyUnicode_AsEncodedString(repr, "utf-8", "~E~");
@@ -235,6 +235,63 @@ LuaArgument pyObjectToLuaArgument(PyObject *object)
     }
 
     return iterator->second(object);
+}
+
+void pythonCaptureException()
+{
+    if (!PyErr_Occurred()) {
+        throw PythonInternalError{};
+    }
+
+    PyObject *errorType, *errorValue, *errorTraceback;
+    PyErr_Fetch(&errorType, &errorValue, &errorTraceback);
+
+    const char *cErrorValue = PyBytes_AS_STRING(
+        PyUnicode_AsEncodedString(
+            PyObject_Str(errorValue),
+            "utf-8",
+            "~E~"
+        )
+    );
+
+    std::string traceback{"No traceback info"};
+
+    try {
+        PyObject *formatExceptionFunction = Modules::getPythonFunction(
+            "mtasa.exception",
+            "traceback_to_string"
+        );
+        if (formatExceptionFunction) {
+            PyObject *tracebackResult = PyObject_CallFunctionObjArgs(
+                formatExceptionFunction,
+                errorType,
+                errorValue,
+                errorTraceback,
+                nullptr
+            );
+
+            if (tracebackResult) {
+                traceback = PyBytes_AS_STRING(
+                    PyUnicode_AsEncodedString(
+                        PyObject_Str(tracebackResult),
+                        "utf-8",
+                        "~E~"
+                    )
+                );
+            }
+        }
+    } catch (std::exception &exception) {
+        // ok, stay with default message
+    }
+
+    std::string errorMessage{
+        "Type: " + Utilities::pyObjectToString(errorType)
+            + "\nMessage: " + cErrorValue
+            + "\nTraceback: \n" + traceback
+    };
+
+    throw PythonInternalError{errorMessage};
+
 }
 
 }

@@ -26,7 +26,7 @@ void error(lua_State *luaVm, const std::string &errorMessage);
  * @param object PyObject pointer
  * @return std::string
  */
-std::string pythonObjectToString(PyObject *object);
+std::string pyObjectToString(PyObject *object);
 
 /**
  * @brief Any python object type to std::string
@@ -50,5 +50,11 @@ PyObject *luaArgumentToPyObject(const LuaArgument &argument);
  * @return LuaArgument
  */
 LuaArgument pyObjectToLuaArgument(PyObject *object);
+
+/**
+ * @brief Captures and throws exception from Python VM
+ * @throws PythonInternalError
+ */
+void pythonCaptureException();
 
 }
