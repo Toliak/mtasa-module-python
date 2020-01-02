@@ -35,16 +35,6 @@ EXTERN_C bool InitModule(ILuaModuleManager10 *pManager, char *szModuleName, char
         PyImport_AppendInittab("_mtasa_core", Modules::mtasaCoreInit);
     }
 
-    PythonVm::init();
-
-    // TODO: move to init
-    const wchar_t *pythonPath = L"mods/deathmatch/python/__init__.py";
-    wchar_t *pyArgv[] = {const_cast<wchar_t *>(pythonPath)};
-    PySys_SetArgv(
-        1,
-        pyArgv
-    );
-
     return true;
 }
 
@@ -61,7 +51,7 @@ EXTERN_C void RegisterFunctions(lua_State *luaVm)
     pModuleManager->RegisterFunction(luaVm, "pythonInit", Commands::pythonInit);
     pModuleManager->RegisterFunction(luaVm, "isPythonInited", Commands::isPythonInited);
     pModuleManager->RegisterFunction(luaVm, "pythonCall", Commands::pythonCall);
-    pModuleManager->RegisterFunction(luaVm, "pythonTriggerEvent", Commands::pythonTriggerEvent);
+    pModuleManager->RegisterFunction(luaVm, "pythonDestroy", Commands::pythonDestroy);
 }
 
 EXTERN_C bool DoPulse()
@@ -78,12 +68,7 @@ EXTERN_C void ResourceStopped(lua_State *)
 
 EXTERN_C bool ShutdownModule(void)
 {
-    Py_Finalize();
-
-    // TODO: revise
-    for (PythonModule *module: Modules::initedModules) {
-        delete module;
-    }
+    PythonVm::destroy();
 
     return true;
 }

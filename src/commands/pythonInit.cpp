@@ -26,6 +26,8 @@ int pythonInitUserModules(const ModuleNameList &moduleNames)
 
         Modules::userModules.emplace(name, module);
     }
+
+    return moduleNames.size();
 }
 
 int Commands::pythonInit(lua_State *luaVm)
@@ -55,6 +57,8 @@ int Commands::pythonInit(lua_State *luaVm)
         std::list<LuaArgument> returnArgs{-1, exception.what()};
         return lua.pushArguments(returnArgs.cbegin(), returnArgs.cend());
     }
+
+    PythonVm::init();
 
     try {
         int result = pythonInitUserModules(fileList);

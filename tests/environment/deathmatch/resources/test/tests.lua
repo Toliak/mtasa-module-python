@@ -1,9 +1,43 @@
+local MODULES = {
+    'mtasa.core',
+    'mtasa.element',
+    'mtasa.event',
+    'mtasa.exception',
+    'main',
+    'element_test',
+    'call_functions',
+}
+
 local TEST_ELEMENT = Vehicle(400, 0, 0, 0)
 
 local TEST_FUNCTIONS = {
     {
         name = "isPythonInited",
-        description = "Checks Python VM initialization",
+        description = "Checks Python VM initialization (true)",
+        input = { },
+        expected = { true },
+    },
+    {
+        name = "pythonDestroy",
+        description = "Destroy python VM",
+        input = { },
+        expected = { },
+    },
+    {
+        name = "isPythonInited",
+        description = "Checks Python VM initialization (false)",
+        input = {  },
+        expected = { false },
+    },
+    {
+        name = "pythonInit",
+        description = "Init python VM",
+        input = { MODULES },
+        expected = { #MODULES },
+    },
+    {
+        name = "isPythonInited",
+        description = "Checks Python VM initialization (true)",
         input = { },
         expected = { true },
     },
@@ -127,11 +161,11 @@ end
 addEventHandler("onResourceStart", resourceRoot, function()
     iprint('===============[ TESTING START ]===============')
 
-    for _, v in pairs(TEST_FUNCTIONS) do
+    for _, v in ipairs(TEST_FUNCTIONS) do
         addTest(v.name)
     end
 
-    for _, v in pairs(TEST_FUNCTIONS) do
+    for _, v in ipairs(TEST_FUNCTIONS) do
         runTest(
                 v.name,
                 v.input or {},

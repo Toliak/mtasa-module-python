@@ -51,6 +51,11 @@ public:
         return mainModule;
     }
 
+    /**
+     * @brief Clear python VM and global variables
+     */
+    static void destroy();
+
 private:
     PythonVm() = default;
 

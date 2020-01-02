@@ -5,8 +5,4 @@ CORE_MODULES = {
     'mtasa.exception',
 }
 
-USER_MODULES = {
-    'main',
-    'element_test',
-    'call_functions',
-}
+USER_MODULES = {  }

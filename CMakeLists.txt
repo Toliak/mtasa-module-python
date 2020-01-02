@@ -22,7 +22,7 @@ set(
         ${CMAKE_CURRENT_SOURCE_DIR}/src/commands/pythonCall.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/commands/isPythonInited.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/commands/pythonInit.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/commands/pythonTriggerEvent.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/commands/pythonDestroy.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/commands/globalLuaVm.cpp
 
         ${CMAKE_CURRENT_SOURCE_DIR}/src/modules/Modules.cpp
