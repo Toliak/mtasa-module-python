@@ -43,6 +43,7 @@ end
 function testStatus()
     iprint('===============[ TOTAL ]===============')
     if TestsInfo.total == TestsInfo.success then
+        iprint("[TEST TOTAL][OK] Tests passed " .. TestsInfo.success .. "/" .. TestsInfo.total)
         iprint("[TEST TOTAL][OK] All tests passed!")
     else
         iprint("[TEST TOTAL][ER] Tests passed " .. TestsInfo.success .. "/" .. TestsInfo.total)

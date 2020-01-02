@@ -103,9 +103,20 @@ local TEST_FUNCTIONS = {
         input = { "call_functions", "callback", TEST_ELEMENT },
         expected = { TEST_ELEMENT },
     },
+    {
+        name = "pythonCall",
+        description = "Calls exception throwing function",
+        input = { "call_functions", "throw_exception" },
+        expected = {
+            -3,
+            "Type: <class 'RuntimeError'>\n"
+                    .. "Message: Test error\n"
+                    .. "Traceback: \n"
+                    .. "  File \"mods/deathmatch/python/call_functions.py\", line 32, in throw_exception\n"
+                    .. "    raise RuntimeError(\"Test error\")"
+        },
+    },
 }
-
--- TODO: add exception test
 
 function callbackFromPython(arg)
     iprint('Callback here. With ', arg)

@@ -26,3 +26,7 @@ def echo(*args):
 
 def callback(*args):
     return core.call('callbackFromPython', 1, *args)
+
+
+def throw_exception():
+    raise RuntimeError("Test error")
