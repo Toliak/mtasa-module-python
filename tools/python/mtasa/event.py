@@ -1,5 +1,3 @@
-from mtasa.core import test
-
 REGISTERED_EVENTS = dict()
 
 
@@ -35,6 +33,7 @@ def trigger_event(event_name: str):
     if event_name in REGISTERED_EVENTS:
         REGISTERED_EVENTS[event_name][0]()
     else:
-        test('47362')
+        pass
+        # test('47362')
 
     return 1

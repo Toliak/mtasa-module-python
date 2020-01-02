@@ -1,5 +1,6 @@
 import json
 
+from mtasa import core
 from mtasa.element import Element
 
 
@@ -21,3 +22,9 @@ def echo(*args):
         f.write('\n')
 
     return args
+
+
+def callback(*args):
+    # raise TypeError("Sample exception")
+
+    return core.call('callbackFromPython', 1, *args)

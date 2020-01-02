@@ -54,11 +54,6 @@ ArgumentList pythonCallInternal(const std::string &moduleName,
     }
     PyObject *module = moduleIterator->second;
 
-    Utilities::iprint(Commands::globalLuaVm,
-                      {"Argument size", (int) arguments.size()});
-    Utilities::iprint(Commands::globalLuaVm,
-                      {"module ptr", std::to_string((uintptr_t) module)});
-
     PyObject *dict = PyModule_GetDict(module);
     PyObject *callable = PyDict_GetItemString(dict, functionName.c_str());
     if (!callable) {

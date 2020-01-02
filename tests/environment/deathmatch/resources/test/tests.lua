@@ -1,3 +1,5 @@
+local TEST_ELEMENT = Vehicle(400, 0, 0, 0)
+
 local TEST_FUNCTIONS = {
     {
         name = "isPythonInited",
@@ -95,7 +97,19 @@ local TEST_FUNCTIONS = {
         input = { "call_functions", "echo", root },
         expected = { root },
     },
+    {
+        name = "pythonCall",
+        description = "Calls callback function",
+        input = { "call_functions", "callback", TEST_ELEMENT },
+        expected = { TEST_ELEMENT },
+    },
 }
+
+function callbackFromPython(arg)
+    iprint('Callback here. With ', arg)
+
+    return arg
+end
 
 addEventHandler("onResourceStart", resourceRoot, function()
     iprint('===============[ TESTING START ]===============')
