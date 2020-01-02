@@ -1,6 +1,6 @@
 import json
 
-from mtasa import coreb
+from mtasa import core
 from mtasa.element import Element
 
 

@@ -105,6 +105,8 @@ local TEST_FUNCTIONS = {
     },
 }
 
+-- TODO: add exception test
+
 function callbackFromPython(arg)
     iprint('Callback here. With ', arg)
 
