@@ -6,4 +6,5 @@ CORE_MODULES = {
 USER_MODULES = {
     'main',
     'something',
+    'call_functions',
 }

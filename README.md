@@ -38,6 +38,12 @@ Checks is Python VM already created
 
 True, if Python VM is created. False otherwise.
 
+### pythonCall
+
+``[return_args ...] pythonCall(string moduleName, string functionName [, arguments ...])``
+
+TODO
+
 ## References
 
 Origin: [https://gitlab.toliak.ru/mtasa/module-python](https://gitlab.toliak.ru/mtasa/module-python)

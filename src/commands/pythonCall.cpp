@@ -1,3 +1,4 @@
+#include <functional>
 #include "ModulePython/modules/Modules.h"
 #include "ModulePython/Exception.h"
 #include "ModulePython/utilities.h"
@@ -8,13 +9,44 @@
 
 using ArgumentList = std::list<LuaArgument>;
 
+PyObject *parseForPython(const ArgumentList &arguments)
+{
+    PyObject *result = PyTuple_New(arguments.size());
+    size_t index = 0;
+    for (const LuaArgument &argument : arguments) {
+        PyTuple_SetItem(result, index, Utilities::luaArgumentToPyObject(argument));
+        ++index;
+    }
+
+    return result;
+}
+
+ArgumentList parseFromPython(PyObject *object)
+{
+    ArgumentList result{};
+
+    if (PyTuple_Check(object)) {
+        size_t size = PyTuple_Size(object);
+
+        for (size_t i = 0; i < size; ++i) {
+            PyObject *item = PyTuple_GetItem(object, i);
+            result.push_back(std::move(Utilities::pyObjectToLuaArgument(item)));
+        }
+
+        return result;
+    }
+
+    result.push_back(std::move(Utilities::pyObjectToLuaArgument(object)));
+    return result;
+}
 // TODO: provide passing userdata
 
-int pythonCallInternal(const std::string &moduleName,
-                        const std::string &functionName,
-                        const ArgumentList &arguments)
+// throws LuaUnexpectedType
+ArgumentList pythonCallInternal(const std::string &moduleName,
+                       const std::string &functionName,
+                       const ArgumentList &arguments)
 {
-    PythonVm::getInstance();
+    // get python function
 
     auto moduleIterator = Modules::userModules.find(moduleName);
     if (moduleIterator == Modules::userModules.cend()) {
@@ -29,17 +61,18 @@ int pythonCallInternal(const std::string &moduleName,
 
     PyObject *dict = PyModule_GetDict(module);
     PyObject *callable = PyDict_GetItemString(dict, functionName.c_str());
+    if (!callable) {
+        throw PythonFunctionNotFound{functionName, moduleName};
+    }
 
-    PyObject *resultTuple = PyObject_CallFunction(callable, "()");
+    // prepare arguments
 
-    PyTypeObject* type = resultTuple->ob_type;
-    const char* cTypeName = type->tp_name;
-    Utilities::iprint(Commands::globalLuaVm,
-                      {"typename", cTypeName});
+    PyObject *pythonArguments = parseForPython(arguments);
 
-    int result = PyLong_AsLong(resultTuple);
+    // call function
 
-    return result;
+    PyObject *functionResult = PyObject_CallObject(callable, pythonArguments);
+    return parseFromPython(functionResult);
 }
 
 int Commands::pythonCall(lua_State *luaVm)
@@ -61,12 +94,24 @@ int Commands::pythonCall(lua_State *luaVm)
 
     std::vector<LuaArgument> allArguments = lua.getArguments();
 
-    int result = pythonCallInternal(
-        argModule.toString(),
-        argFunction.toString(),
-        ArgumentList{allArguments.cbegin() + 2, allArguments.cend()}
-    );
-    lua.pushArgument(result);
-    return 1;
+    try {
+        auto resultList = pythonCallInternal(
+            argModule.toString(),
+            argFunction.toString(),
+            ArgumentList{allArguments.cbegin() + 2, allArguments.cend()}
+        );
+        return lua.pushArguments(resultList.cbegin(), resultList.cend());;
+
+    } catch (LuaException &exception) {
+        Utilities::error(luaVm, exception.what());
+
+        std::list<LuaArgument> returnArgs{-2, exception.what()};
+        return lua.pushArguments(returnArgs.cbegin(), returnArgs.cend());
+    } catch (PythonException &exception) {
+        Utilities::error(luaVm, exception.what());
+
+        std::list<LuaArgument> returnArgs{-3, exception.what()};
+        return lua.pushArguments(returnArgs.cbegin(), returnArgs.cend());
+    }
 }
 
