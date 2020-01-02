@@ -14,7 +14,7 @@ docker run      --rm -t \
                 --name module_python_builder_container \
                 module_python_builder
 
-mv $SCRIPT_DIR/build-docker $SCRIPT_DIR/build-docker-temp
-mkdir $SCRIPT_DIR/build-docker
-mv $SCRIPT_DIR/build-docker-temp/libModulePython.so $SCRIPT_DIR/build-docker/libModulePython.so
-rm -rf $SCRIPT_DIR/build-docker-temp
+# mv $SCRIPT_DIR/build-docker $SCRIPT_DIR/build-docker-temp
+# mkdir $SCRIPT_DIR/build-docker
+# mv $SCRIPT_DIR/build-docker-temp/libModulePython.so $SCRIPT_DIR/build-docker/libModulePython.so
+# rm -rf $SCRIPT_DIR/build-docker-temp

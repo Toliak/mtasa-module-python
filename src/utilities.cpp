@@ -1,4 +1,5 @@
 #include <functional>
+#include <ModulePython/modules/Modules.h>
 #include "ModulePython/Exception.h"
 #include "ModulePython/commands/globalLuaVm.h"
 #include "ModulePython/utilities.h"
@@ -49,6 +50,25 @@ PyObject *luaTableMapToPyObject(const LuaArgument &argument)
     return dict;
 }
 
+PyObject *luaObjectToPyObject(LuaArgument argument)
+{
+    const LuaObject &object = argument.extractObject();
+
+    PyObject *constructor = Modules::getPythonFunction(
+        "mtasa.element",
+        "construct_element_by_id_and_name"
+    );
+
+    PyObject *result = PyObject_CallFunction(
+        constructor,
+        "ks",
+        object.getObjectId().id,
+        object.getStringClass().c_str()
+    );
+
+    return result;
+}
+
 LuaArgument::TableListType pyListToLuaTable(PyObject *object)
 {
     LuaArgument::TableListType result{};
@@ -80,6 +100,45 @@ LuaArgument::TableMapType pyDictToLuaTable(PyObject *object)
     return result;
 }
 
+LuaObject pyObjectToLuaObject(PyObject *object)
+{
+    struct ClassInfo
+    {
+        std::string moduleName;
+        std::string className;
+    };
+    using ParserFunctionType = std::function<LuaObject(PyObject *)>;
+    using ParserInnerType = std::pair<ClassInfo, ParserFunctionType>;
+    static const std::list<ParserInnerType> parser{
+        {
+            {"mtasa.element", "Element"},
+            [](PyObject *object) -> LuaObject {
+                std::string typeName = Utilities::pythonTypeToString(object);
+                PyObject *attrId = PyObject_GetAttrString(object, "_id");
+                if (!attrId) {
+                    throw PythonException{"Attribute _id not found in class mtasa.element.Element"};
+                }
+
+                unsigned long id = PyLong_AsUnsignedLong(attrId);
+                return LuaObject{
+                    ObjectId{id},
+                    typeName
+                };
+            },
+        },
+    };
+
+    for (const auto &pair: parser) {
+        PyObject *pyClass = Modules::getPythonClass(pair.first.moduleName, pair.first.className);
+        if (!PyObject_IsInstance(object, pyClass)) {
+            continue;
+        }
+        return pair.second(object);
+    }
+
+    throw PythonUnexpectedType{Utilities::pythonTypeToString(object)};
+}
+
 namespace Utilities
 {
 
@@ -106,6 +165,12 @@ std::string pythonObjectToString(PyObject *object)
     return bytes;
 }
 
+std::string pythonTypeToString(PyObject *object)
+{
+    PyTypeObject *type = object->ob_type;
+    return type->tp_name;
+}
+
 PyObject *luaArgumentToPyObject(const LuaArgument &argument)
 {
     using ParserFunctionType = std::function<PyObject *(const LuaArgument &)>;
@@ -121,6 +186,9 @@ PyObject *luaArgumentToPyObject(const LuaArgument &argument)
         }},
         {LuaArgumentType::LuaTypeTableMap, [](const LuaArgument &argument) -> PyObject * {
             return luaTableMapToPyObject(argument);
+        }},
+        {LuaArgumentType::LuaTypeUserdata, [](const LuaArgument &argument) -> PyObject * {
+            return luaObjectToPyObject(argument);
         }},
     };
 
@@ -159,12 +227,11 @@ LuaArgument pyObjectToLuaArgument(PyObject *object)
         }},
     };
 
-    PyTypeObject *type = object->ob_type;
-    const char *cTypeName = type->tp_name;
+    std::string typeName = pythonTypeToString(object);
 
-    auto iterator = parser.find(cTypeName);
+    auto iterator = parser.find(typeName);
     if (iterator == parser.cend()) {
-        throw PythonUnexpectedType{cTypeName};
+        return pyObjectToLuaObject(object);
     }
 
     return iterator->second(object);

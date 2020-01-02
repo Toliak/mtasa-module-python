@@ -42,6 +42,20 @@ public:
     {}
 };
 
+class PythonClassNotFound: public PythonException
+{
+public:
+    using PythonException::PythonException;
+
+    explicit PythonClassNotFound(const std::string &className)
+        : PythonException("Class '" + className + "' not found")
+    {}
+
+    PythonClassNotFound(const std::string &className, const std::string &moduleName)
+        : PythonException("Class '" + className + "' in module '" + moduleName + "' not found")
+    {}
+};
+
 class PythonUnexpectedType: public PythonException
 {
 public:

@@ -1,6 +1,6 @@
 import json
 
-from mtasa import element
+from mtasa.element import Element
 
 
 def accept_string(string):
@@ -16,4 +16,8 @@ def accept_map(dictionary):
 
 
 def echo(*args):
+    with open("mods/deathmatch/logs/python.log", "a") as f:
+        f.write(str(args))
+        f.write('\n')
+
     return args

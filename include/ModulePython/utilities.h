@@ -29,6 +29,13 @@ void error(lua_State *luaVm, const std::string &errorMessage);
 std::string pythonObjectToString(PyObject *object);
 
 /**
+ * @brief Any python object type to std::string
+ * @param object PyObject pointer
+ * @return std::string
+ */
+std::string pythonTypeToString(PyObject *object);
+
+/**
  * @brief Transforms LuaArgument to Python object
  * @throws LuaUnexpectedType If passed type cannot be transformed into PyObject *
  * @param argument Argument
@@ -37,9 +44,10 @@ std::string pythonObjectToString(PyObject *object);
 PyObject *luaArgumentToPyObject(const LuaArgument &argument);
 
 /**
- * @brief TODO
- * @param object
- * @return
+ * @brief Transforms PyObject into LuaArgument
+ * @throws PythonUnexpectedType If passed type cannot be transformed into LuaArgument
+ * @param object Python object pointer
+ * @return LuaArgument
  */
 LuaArgument pyObjectToLuaArgument(PyObject *object);
 

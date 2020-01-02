@@ -20,8 +20,8 @@ local TEST_FUNCTIONS = {
     {
         name = "pythonCall",
         description = "Calls not existing function from python",
-        input = { "something", "__not_existing_function__" },
-        expected = { -3, "Function '__not_existing_function__' in module 'something' not found" },
+        input = { "call_functions", "__not_existing_function__" },
+        expected = { -3, "Function '__not_existing_function__' in module 'call_functions' not found" },
     },
     {
         name = "pythonCall",
@@ -82,6 +82,18 @@ local TEST_FUNCTIONS = {
         description = "Calls echo with list with nested tables",
         input = { "call_functions", "echo", { 1, { i = 2, j = "str 3" }, 4 } },
         expected = { { 1, { i = 2, j = "str 3" }, 4 } },
+    },
+    {
+        name = "pythonCall",
+        description = "Calls echo with resourceRoot",
+        input = { "call_functions", "echo", resourceRoot },
+        expected = { resourceRoot },
+    },
+    {
+        name = "pythonCall",
+        description = "Calls echo with root",
+        input = { "call_functions", "echo", root },
+        expected = { root },
     },
 }
 

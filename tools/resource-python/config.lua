@@ -1,10 +1,11 @@
 CORE_MODULES = {
     'mtasa.core',
+    'mtasa.element',
     'mtasa.event',
 }
 
 USER_MODULES = {
     'main',
-    'something',
+    'element_test',
     'call_functions',
 }
