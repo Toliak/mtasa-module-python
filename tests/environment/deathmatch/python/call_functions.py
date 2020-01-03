@@ -30,3 +30,8 @@ def callback(*args):
 
 def throw_exception():
     raise RuntimeError("Test error")
+
+
+def call_element_method_dimension(element):
+    x = core.call_method(element, "getDimension", 1)
+    return x

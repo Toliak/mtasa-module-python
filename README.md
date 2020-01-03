@@ -5,19 +5,19 @@
 
 # MTASA Module Python
 
-Full Python 3.7.6 support for server-side scripts 
+Full Python 3.7.6 support for server-side scripts
 
 ## Tutorial
 
 TODO
 
-## API
+## Lua API
 
 ### pythonInit
 
 ``int[, string] pythonInit(table moduleNames)``
 
-Initializes Python VM and loads modules
+Initializes Python VM and loads modules.
 
 #### Arguments
 
@@ -28,11 +28,21 @@ Initializes Python VM and loads modules
 Amount of loaded modules, if success. 
 Exit code and error message, otherwise.
 
+### pythonDestroy
+
+``pythonDestroy()``
+
+Destroys Python VM
+
+#### Return
+
+Nothing
+
 ### isPythonInited
 
 ``bool isPythonInited()``
 
-Checks is Python VM already created
+Checks is Python VM already created.
 
 #### Return
 
@@ -42,7 +52,63 @@ True, if Python VM is created. False otherwise.
 
 ``[return_args ...] pythonCall(string moduleName, string functionName [, arguments ...])``
 
-TODO
+Calls function from Python VM
+
+#### Arguments
+
+``string moduleName`` - Python module name
+
+``string functionName`` - Python function name
+
+``[arguments ...]`` - Arguments to pass to Python function
+
+#### Return
+
+Returned values from Python function, or negative int and string on error
+
+#### Throws
+
+Prints error into console
+
+## Python API
+
+### mtasa.core.call
+
+``any call(str function_name, int return_args_amount, *args)``
+
+Calls any global Lua function (from resources, also) 
+
+#### Arguments
+
+``str function_name`` - name of Lua function
+
+``str return_args_amount`` - amount of returned arguments
+
+``*args`` - arguments to pass to Lua function 
+
+#### Return
+
+Returned values from Lua function
+
+### mtasa.core.call_method
+
+``any call(Element element, str method_name, int return_args_amount, *args)``
+
+Calls any global Lua function (from resources, also) 
+
+#### Arguments
+
+``Element element`` - MTASA Element
+
+``str method_name`` - name of Lua method
+
+``str return_args_amount`` - amount of returned arguments
+
+``*args`` - arguments to pass to Lua method 
+
+#### Return
+
+Returned values from Lua method
 
 ## References
 

@@ -9,6 +9,7 @@ local MODULES = {
 }
 
 local TEST_ELEMENT = Vehicle(400, 0, 0, 0)
+local TEST_VECTOR = Vector3(5,8,10)
 
 local TEST_FUNCTIONS = {
     {
@@ -149,6 +150,12 @@ local TEST_FUNCTIONS = {
                     .. "  File \"mods/deathmatch/python/call_functions.py\", line 32, in throw_exception\n"
                     .. "    raise RuntimeError(\"Test error\")"
         },
+    },
+    {
+        name = "pythonCall",
+        description = "Calls callback function that calls element method",
+        input = { "call_functions", "call_element_method_dimension", TEST_ELEMENT },
+        expected = { 0 },
     },
 }
 
