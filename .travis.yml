@@ -1,0 +1,8 @@
+language: cpp
+
+services:
+  - docker
+
+script:
+  - ./build-docker.sh
+  - ./run-tests.sh

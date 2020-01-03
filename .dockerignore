@@ -1,7 +1,7 @@
 __pycache__
-venv
 .vs
 .idea
 *build*
-!*.sh
 *local*
+!*.sh
+tests/environment

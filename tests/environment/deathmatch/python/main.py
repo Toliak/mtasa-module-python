@@ -1,0 +1,1 @@
+from mtasa import event
