@@ -62,6 +62,8 @@ Calls function from Python VM
 
 ``[arguments ...]`` - Arguments to pass to Python function
 
+Allowed argument types: string, number, boolean, table, Element
+
 #### Return
 
 Returned values from Python function, or negative int and string on error
@@ -85,6 +87,8 @@ Calls any global Lua function (from resources, also)
 ``str return_args_amount`` - amount of returned arguments
 
 ``*args`` - arguments to pass to Lua function 
+
+Allowed argument types: string, number, boolean, list, dict, Element (or subclasses)
 
 #### Return
 
